@@ -1,12 +1,21 @@
 {
-  "name": "electron-webpack-quick-start",
-  "version": "0.0.0",
+  "name": "electron-demo",
+  "description": "Test application built using Electron.",
+  "version": "0.0.1",
+  "author": "Kim H. Nguyen",
   "license": "MIT",
+  "build": {
+    "appId": "my.id",
+    "mac": {
+      "category": "my.app.category.type"
+    }
+  },
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "source-map-support": "^0.5.5"
