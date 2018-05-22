@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, dialog, globalShortcut, shell, ipcRenderer } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 
@@ -10,10 +10,18 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 let mainWindow
 
 function createMainWindow() {
-  const window = new BrowserWindow()
+  const options = {
+    width: 400,
+    height: 225,
+    
+    // transparent: true
+    // frame: false
+
+  }
+  const window = new BrowserWindow(options)
 
   if (isDevelopment) {
-    window.webContents.openDevTools()
+    // window.webContents.openDevTools()
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
   }
   else {
@@ -56,4 +64,36 @@ app.on('activate', () => {
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow()
+  
+  // Shortcut listener
+  globalShortcut.register('CommandOrControl+K', () => {
+    
+    // NOTE: Show dialog message boxes
+    dialog.showMessageBox({
+      type: 'info',
+      message: 'Success!',
+      detail: 'You presesd the registered global shortcut keybinding :D',
+      buttons: ['OK']
+    })
+    
+    // NOTE: Open external links
+    // shell.openExternal('https://github.paypal.com')
+
+    // NOTE: Create a new HTML5 Notification (only available in HTML5 renderer process)
+    // const options = {
+    //   title: 'Basic Notification',
+    //   body: 'Short message part'
+    // }
+    // const notification = new window.Notification(options.title, options)
+    // notification.onclick = () => {
+    //   console.log('Notification clicked')
+    // }
+
+    // NOTE: Open a file or directory using ipcRenderer
+    // ipcRenderer.send('open-file-dialog')
+    // ipcRenderer.on('selected-directory', (event, path) => {
+    //   document.body.innerHTML = `You selected: ${path}`
+    // })
+  })
+    
 })
